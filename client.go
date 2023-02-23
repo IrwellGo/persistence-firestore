@@ -10,6 +10,10 @@ type Client struct {
 	collection string
 }
 
+func FakeFuncForUnitTesting(pass bool) bool {
+	return pass
+}
+
 func New(client *firestore.Client, collection string) Client {
 	return Client{
 		client,
