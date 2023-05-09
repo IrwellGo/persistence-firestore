@@ -30,16 +30,36 @@ func NewSimplified(ctx context.Context, projectId string, collection string) (Cl
 	return New(client, collection), nil
 }
 
-func (r Client) Create(ctx context.Context, id string, object interface{}) error {
-	_, err := r.getDocRef(id).Create(ctx, object)
+func (c Client) Create(ctx context.Context, id string, object interface{}) error {
+	_, err := c.getDocRef(id).Create(ctx, object)
 
 	return err
 }
 
-func (r Client) getCollectionRef() *firestore.CollectionRef {
-	return r.client.Collection(r.collection)
+func (c Client) GetById(ctx context.Context, id string, toObject *interface{}) error {
+	doc, err := c.getDocRef(id).Get(ctx)
+	if err != nil {
+		return err
+	}
+
+	err = doc.DataTo(toObject)
+	return err
 }
 
-func (r Client) getDocRef(id string) *firestore.DocumentRef {
-	return r.getCollectionRef().Doc(id)
+func (c Client) Put(ctx context.Context, id string, object interface{}) error {
+	_, err := c.getDocRef(id).Set(ctx, object)
+	return err
+}
+
+func (c Client) Delete(ctx context.Context, id string) error {
+	_, err := c.getDocRef(id).Delete(ctx)
+	return err
+}
+
+func (c Client) getCollectionRef() *firestore.CollectionRef {
+	return c.client.Collection(c.collection)
+}
+
+func (c Client) getDocRef(id string) *firestore.DocumentRef {
+	return c.getCollectionRef().Doc(id)
 }
