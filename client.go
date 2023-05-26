@@ -36,13 +36,13 @@ func (c Client) Create(ctx context.Context, id string, object interface{}) error
 	return err
 }
 
-func (c Client) GetById(ctx context.Context, id string, toObject *interface{}) error {
+func (c Client) GetById(ctx context.Context, id string, object interface{}) error {
 	doc, err := c.getDocRef(id).Get(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = doc.DataTo(toObject)
+	err = doc.DataTo(object)
 	return err
 }
 
